@@ -9,6 +9,13 @@ pipeline{
     parameters {
         choice(name: 'action', choices: 'create\ndelete', description: 'Select create or destroy.')
     }
+    tools{
+        jdk 'jdk17'
+        nodejs 'node16'
+    }
+    environment {
+        SCANNER_HOME=tool 'sonarqube'
+    }
     stages{
         stage('clean workspace'){
             steps{
@@ -18,6 +25,27 @@ pipeline{
         stage('checkout from Git'){
             steps{
                 checkoutGit('https://github.com/mukeshr-29/Youtube-project-12.git', 'main')
+            }
+        }
+        stage('sonarqube Analysis'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                sonarqubeAnalysis()
+            }
+        }
+        stage('sonarqube QualitGate'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                script{
+                    def credentialsId = 'sonarqube'
+                    qualityGate(credentialsId)
+                }
+            }
+        }
+        stage('Npm'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                npmInstall()
             }
         }
     }
