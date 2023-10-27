@@ -48,6 +48,17 @@ pipeline{
                 npmInstall()
             }
         }
+        stage('OWASP FS SCAN') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        stage('trivy scan'){
+            steps{
+                trivyFs()
+            }
+        }
     }
     post {
          always {
