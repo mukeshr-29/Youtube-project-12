@@ -1,27 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-deployment
+  name: my-app-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myapp
+      app: my-app
   template:
     metadata:
       labels:
-        app: myapp
+        app: my-app
     spec:
       containers:
-      - name: myapp
-        image: mukeshr29/youtube-project:latest
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 3000
-
-
+        - name: my-app
+          image: mukeshr29/youtube-project:latest
+          ports:
+            - containerPort: 3000  # Your Node.js application should listen on port 3000
 
 
