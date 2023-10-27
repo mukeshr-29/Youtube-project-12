@@ -17,7 +17,7 @@ spec:
         image: mukeshr29/youtube-project:latest
         resources:
           limits:
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "500m"
         ports:
         - containerPort: 3000
